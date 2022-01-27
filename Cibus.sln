@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cibus.Backend", "Cibus.Backend\Cibus.Backend.csproj", "{65374935-CADB-4E56-8FC7-9A68FBEBAA33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cibus.Tests", "Cibus.Tests\Cibus.Tests.csproj", "{FAFB4C45-5EBE-49B9-A4BE-4E0856789A03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cibus.Frontend", "Cibus.Frontend\Cibus.Frontend.csproj", "{6D4B0F69-CDD3-4775-9CA0-C03769B90D99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65374935-CADB-4E56-8FC7-9A68FBEBAA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65374935-CADB-4E56-8FC7-9A68FBEBAA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65374935-CADB-4E56-8FC7-9A68FBEBAA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65374935-CADB-4E56-8FC7-9A68FBEBAA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAFB4C45-5EBE-49B9-A4BE-4E0856789A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAFB4C45-5EBE-49B9-A4BE-4E0856789A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAFB4C45-5EBE-49B9-A4BE-4E0856789A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAFB4C45-5EBE-49B9-A4BE-4E0856789A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4B0F69-CDD3-4775-9CA0-C03769B90D99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4B0F69-CDD3-4775-9CA0-C03769B90D99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4B0F69-CDD3-4775-9CA0-C03769B90D99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4B0F69-CDD3-4775-9CA0-C03769B90D99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
