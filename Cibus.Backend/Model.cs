@@ -6,7 +6,7 @@ namespace Cibus
 {
 	public class CibusDatabaseContext : DbContext
 	{
-		public DbSet<RecipeData>? Recipes { get; set; }
+		public DbSet<RecipeData> Recipes { get; set; }
 		public string DbPath { get; }
 
 		public CibusDatabaseContext()

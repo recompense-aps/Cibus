@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cibus
 {
@@ -98,9 +99,19 @@ namespace Cibus
 			return data;
 		}
 
-		public RecipeData? GetOrCreateRecipe(Guid recipeGuid)
+		public DbSet<RecipeData> GetAllRecipeData()
 		{
-			var recipe = context?.Recipes?.SingleOrDefault(r => r.Guid == recipeGuid) ?? new RecipeData();
+			return context.Recipes;
+		}
+
+		public async Task<RecipeData> GetOrCreateRecipe(Guid? recipeGuid = null)
+		{
+			var recipe = context?.Recipes?.SingleOrDefault(r => r.Guid == recipeGuid);
+			if (recipe == null)
+			{
+				recipe = new RecipeData();
+				await context.AddAsync(recipe);
+			}
 			return recipe;
 		}
 	}
