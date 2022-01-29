@@ -10,6 +10,9 @@ user to get and optionally save a recipe via url with the extra garbage stripped
 ## Roadmap
 As of now, cibus is not meant to be a fully operationl app, but rather a proof of concept.
 
+It would be cool to have this as an open source project with anyone contributing parsers,
+but thats pretty far fetched.
+
 Recipe sites that intended for support: (the goal is 5)
 - [ ] [All Recipes](https://www.allrecipes.com/)
 - [ ] [Simply Recipes](https://www.simplyrecipes.com/)
