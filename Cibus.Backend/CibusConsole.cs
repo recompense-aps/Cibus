@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Cibus.Backend
 {
@@ -100,9 +101,58 @@ namespace Cibus.Backend
 			))
 			{
 				var url = processor.Switch("u").Default("https://www.allrecipes.com/recipe/220751/quick-chicken-piccata/").String;
-				await Parser.Factory(url).Parse();
+				var recipe = await Parser.Factory(url).Parse();
+				Log(JsonConvert.SerializeObject(recipe, Formatting.Indented));
 			}
 		}
+
+		[CibusCommand]
+		public static async Task ParseRecipeGeneric(InputProcessor processor)
+		{
+			if (processor.Help("Generates a recipe based on the given url",
+				("u", "url for the recipe", true)
+			))
+			{
+				var url = processor.Switch("u").Default("https://www.allrecipes.com/recipe/220751/quick-chicken-piccata/").String;
+				var recipe = await (new GenericParser(url)).Parse();
+				var json = JsonConvert.SerializeObject(recipe, Formatting.Indented);
+				Log(json);
+				File.WriteAllText("outtest.txt", json);
+			}
+		}
+
+		[CibusCommand]
+		public static async Task ParseRecipeBatch(InputProcessor processor)
+		{
+			if (processor.Help("Generates a recipe based on the given url",
+				("p", "path to json batch", true)
+			))
+			{
+				var path = processor.Switch("p").Default("generic-batch-test-in.json").String;
+				var urls = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(path));
+				var recipes = new List<RecipeData>();
+
+				foreach(string url in urls ?? new List<string>())
+				{
+					var parser = Parser.Factory(url) as GenericParser;
+					var recipe = await parser.Parse();
+
+					if (parser.IsRecipe)
+					{
+						recipes.Add(recipe);
+						Log($"Parsed (score: {Math.Round(parser.RecipeMatchScore, 2)}) {url}", ConsoleColor.Green);
+					}
+					else
+					{
+						Log($"Not a recipe (score: {Math.Round(parser.RecipeMatchScore, 2)}) {url}", ConsoleColor.Red);
+					}
+					
+				}
+
+				await File.WriteAllTextAsync("batch-out.json", JsonConvert.SerializeObject(recipes, Formatting.Indented));
+			}
+		}
+		
 	}
 
 	public class CibusCommand : System.Attribute {  }

@@ -26,9 +26,18 @@ The user might want to save recipes as well
 - [ ] Functional user accounts
 
 ## Development
+Cibus is a .NET Core app using c# on the backend as well as the frontend via [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor).
+Cibus uses [Entity Framkework Core](https://docs.microsoft.com/en-us/ef/core/) on top of a SqlLite database.
 
 ### Backend
+The backend is currently set up as a console app. It contains all the core data sctructures
+as well as database operations and any other core logic. The console provides a set of commands
+for interacting with the database. See the docs for how to use it.
 
 ### Frontend
+Blazor! No javascript.
 
 ### Tests
+Cibus uses xUnit for unit testing and can be found in `Cibus.Tests`
+
+`dotnet test` will execute the unit tests.

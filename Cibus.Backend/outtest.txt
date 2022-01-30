@@ -1,0 +1,118 @@
+{
+  "Guid": null,
+  "Name": "Dar’s Coconut Cream Pie",
+  "Description": null,
+  "PrepTime": null,
+  "CookTime": null,
+  "TotalTime": null,
+  "Yield": null,
+  "Ingredients": [
+    {
+      "Name": "Pastry for single-crust pie",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "4 large egg yolks, room temperature",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "2 cups coconut milk",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1-1/2 cups half-and-half cream",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1 cup sugar",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1/3 cup cornstarch",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1/4 teaspoon salt",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "2 teaspoons vanilla extract",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1-1/2 cups sweetened shredded coconut, toasted, divided",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "2 cups heavy whipping cream",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1/4 cup confectioners' sugar",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    },
+    {
+      "Name": "1/2 teaspoon vanilla extract",
+      "Unit": null,
+      "Amount": null,
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    }
+  ],
+  "Directions": [
+    "On a lightly floured surface, roll dough to a 1/8-in.-thick circle; transfer to a 9-in. pie plate. Trim crust to 1/2 in. beyond rim of plate; flute edge. Refrigerate 30 minutes. Preheat oven to 425°.",
+    "Line crust with a double thickness of foil. Fill with pie weights, dried beans or uncooked rice. Bake on a lower oven rack until edge is golden brown, 20-25 minutes. Remove foil and weights; bake until bottom is golden brown, 3-6 minutes longer. Cool completely on a wire rack.",
+    "In a large heavy saucepan, whisk egg yolks, coconut milk, cream, sugar, cornstarch and salt until blended. Bring to a gentle boil over medium heat, whisking constantly. Reduce heat to medium-low; cook 2 minutes longer, whisking vigorously. Remove from heat; stir in vanilla and 1 cup coconut. Immediately transfer to crust.",
+    "Press plastic wrap onto surface of filling. Refrigerate until cold, 2 hours.",
+    "In a large bowl, beat cream until it begins to thicken. Add confectioners' sugar and vanilla; beat until soft peaks form. Spread over pie. Sprinkle with remaining coconut."
+  ],
+  "ExternalSource": null,
+  "Id": 0,
+  "DateCreated": null,
+  "DateUpdated": null
+}
