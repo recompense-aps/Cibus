@@ -5,14 +5,45 @@ using System.Web;
 
 namespace Cibus
 {
+	public enum RecipeParsingSection { Ingredients, Directions }
 	public class GenericParser : Parser
 	{
 		public override bool CanParse() => true;
-		public bool IsRecipe => RecipeMatchScore >= 1;
-		public decimal RecipeMatchScore { get; private set; } = 0;
+		public decimal MatchingTolerance { get; set; } = 0.9m;
+		public bool IsRecipe => RecipeMatchScore >= MatchingTolerance;
+		public decimal RecipeMatchScore => matchingScores.Sum() / matchingScores.Count();
+		public Dictionary<RecipeParsingSection, Func<List<ParserToken>,decimal>> ScoringAlgorithms { get; private set; } = new Dictionary<RecipeParsingSection, Func<List<ParserToken>, decimal>>()
+		{
+			{ RecipeParsingSection.Ingredients, Algorithms.ScoreLineByLine(Keywords.IngredientKeywords) },
+			{ RecipeParsingSection.Directions, Algorithms.ScoreLineByLine(Keywords.DirectionsKeywords) }
+		};
+		private List<decimal> matchingScores = new List<decimal>();
+		private object? useFor = null;
+
 		public GenericParser(string parsingUrl)
 		{
 			url = parsingUrl;
+		}
+		public GenericParser Use(object thing)
+		{
+			useFor = thing;
+			return this;
+		}
+		public GenericParser As(RecipeParsingSection parsingSection)
+		{
+			var algorithm = useFor as Func<List<string>,Func<List<ParserToken>,decimal>>;
+
+			if (algorithm == null) 
+				throw new ArgumentException($"Could not use ${useFor?.GetType()?.Name ?? "null"} for {parsingSection}");
+
+			List<string> keywords = Keywords.IngredientKeywords;
+			
+			if (parsingSection == RecipeParsingSection.Directions)
+				keywords = Keywords.DirectionsKeywords;
+
+			ScoringAlgorithms[parsingSection] = algorithm(keywords);
+
+			return this;
 		}
 		protected override RecipeData ToRecipe()
 		{
@@ -65,15 +96,19 @@ namespace Cibus
 				"Unable to find title";
 		}
 
-		private List<List<ParserToken>> GroupTokensOfTagByParentNode(string tag)
+		private List<List<ParserToken>> GroupTokensOfTagByParentNode(string tag, Func<ParserToken, bool>? filter = null)
 		{
-			return tokens?.Where(token => token.tag == tag)
+			if (filter == null) filter = (token) => true;
+
+			return tokens?
+				.Where(token => token.tag == tag && filter(token))
 				.GroupBy(x => x.source.ParentNode)
+				.DistinctBy(x => string.Join("", x.ToList().Select(y => y.contents)).ToLower())
 				.Select(x => x.ToList())
 				.ToList();
 		}
 
-		private (int score, List<ParserToken> group) FindBestTokenGroup(Func<List<ParserToken>,int> scorer, List<List<ParserToken>> groups)
+		private (decimal score, List<ParserToken> group) FindBestTokenGroup(Func<List<ParserToken>,decimal> scorer, List<List<ParserToken>> groups)
 		{
 			var bestOption = groups.First();
 			var bestScore = scorer(bestOption); 
@@ -89,30 +124,15 @@ namespace Cibus
 				}
 			}
 
-			RecipeMatchScore += (decimal)bestScore / (decimal)bestOption.Count;
+			matchingScores.Add(bestScore);
 
 			return (bestScore, bestOption);
 		}
 
-		private Func<List<ParserToken>,int> GetStandardTokenScorer(Dictionary<string, int> tokenScoreLookUp)
-		{
-			return (tokens) => {
-				string combined = string.Join("", tokens.Select(x => x.contents));
-			
-				return tokenScoreLookUp.Select(x => {
-					int occurances = combined.Split(x.Key).Length;
-
-					if (occurances > 0) occurances--;
-
-					return occurances * x.Value;
-				}).Sum();
-			};
-		}
-
-		private List<ParserToken>? FindBestTokenGroupWithTags(Func<List<ParserToken>,int> scorer, params string[] tags)
+		private List<ParserToken>? FindBestTokenGroupWithTags(Func<List<ParserToken>,decimal> scorer, params string[] tags)
 		{
 			return tags
-				.Select(GroupTokensOfTagByParentNode)
+				.Select(x => GroupTokensOfTagByParentNode(x, token => !token.source.DescendantNodes().Any(x => x.Name == "a")))
 				.Select(x => FindBestTokenGroup(scorer, x))
 				.MaxBy(x => x.score)
 				.group
@@ -121,42 +141,12 @@ namespace Cibus
 
 		private List<ParserToken>? FindIngredientTokens()
 		{
-			// probably should be a db thing?
-			var scorer = GetStandardTokenScorer(new Dictionary<string, int>()
-			{
-				{ "½", 1},
-				{ "1/4", 1},
-				{ "1/2", 1},
-				{ "1/3", 1},
-				{ "¼", 1 },
-				{ "cup", 1},
-				{ "tablespoon", 1},
-				{ "ounce", 1},
-				{ "pound", 1},
-				{ "salt", 1},
-				{ "pepper", 1}
-			});
-
-			return FindBestTokenGroupWithTags(scorer, "li", "p");
+			return FindBestTokenGroupWithTags(ScoringAlgorithms[RecipeParsingSection.Ingredients], "li", "p");
 		}
 
 		private List<ParserToken>? FindDirectionTokens()
 		{
-			// probably should be a db thing?
-			var scorer = GetStandardTokenScorer(new Dictionary<string, int>()
-			{
-				{ "roll", 1},
-				{ "line", 1},
-				{ "boil", 1},
-				{ "cut", 1},
-				{ "chop", 1 },
-				{ "sir", 1},
-				{ "fill", 1},
-				{ "ounce", 1},
-				{ "refrigerate ", 1},
-			});
-
-			return FindBestTokenGroupWithTags(scorer, "li", "p");
+			return FindBestTokenGroupWithTags(ScoringAlgorithms[RecipeParsingSection.Directions], "li", "p");
 		}
 	}
 }

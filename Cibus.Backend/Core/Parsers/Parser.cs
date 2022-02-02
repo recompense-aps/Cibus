@@ -39,6 +39,11 @@ namespace Cibus
 			return new GenericParser(parsingUrl);
 		}
 
+		public static T Factory<T>(string? parsingUrl) where T:Parser
+		{
+			return Factory(parsingUrl) as T ?? throw new ArgumentException("Could not create parser");
+		}
+
 		public abstract bool CanParse();
 		protected abstract RecipeData ToRecipe();
 	}

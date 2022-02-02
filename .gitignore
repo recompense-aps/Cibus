@@ -2,6 +2,10 @@
 omnisharp.json
 .vscode
 
+#data stuff
+data/
+Out/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

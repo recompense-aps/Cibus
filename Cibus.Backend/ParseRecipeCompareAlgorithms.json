@@ -1,0 +1,121 @@
+[
+  {
+    "Keys": [
+      0,
+      1
+    ],
+    "RecipeMatchScore": 36.75,
+    "parsedRecipe": {
+      "Guid": null,
+      "Name": "Quick Chicken Piccata",
+      "Description": null,
+      "PrepTime": null,
+      "CookTime": null,
+      "TotalTime": null,
+      "Yield": null,
+      "Ingredients": [
+        {
+          "Name": "4 skinless, boneless chicken breast halves",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "cayenne pepper, or to taste",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "salt and ground black pepper to taste",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "all-purpose flour for dredging",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "2 tablespoons olive oil",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "1 tablespoon capers, drained",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "½ cup white wine",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "¼ cup fresh lemon juice",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "¼ cup water",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "3 tablespoons cold unsalted butter, cut in 1/4-inch slices",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        },
+        {
+          "Name": "2 tablespoons fresh Italian parsley, chopped",
+          "Unit": null,
+          "Amount": null,
+          "Id": 0,
+          "DateCreated": null,
+          "DateUpdated": null
+        }
+      ],
+      "Directions": [
+        "Step 1   Place chicken breasts between 2 layers of plastic wrap and pound to about 1/2-inch thick.    Advertisement",
+        "Step 2   Season both sides of chicken breasts with cayenne, salt, and black pepper; dredge lightly in flour and shake off any excess.",
+        "Step 3   Heat olive oil in a skillet over medium-high heat. Place chicken in the pan, reduce heat to medium, and cook until browned and cooked through, about 5 minutes per side; remove to a plate.",
+        "Step 4   Cook capers in reserved oil, smashing them lightly to release brine, until warmed though, about 30 seconds.",
+        "Step 5   Pour white wine into skillet. Scrape any browned bits from the bottom of the pan with a wooden spoon. Cook until reduced by half, about 2 minutes.",
+        "Step 6   Stir lemon juice, water, and butter into the reduced wine mixture; cook and stir continuously to form a thick sauce, about 2 minutes. Reduce heat to low and stir parsley through the sauce.",
+        "Step 7   Return chicken breasts to the pan cook until heated through, 1 to 2 minutes. Serve with sauce spooned over the top."
+      ],
+      "ExternalSource": "https://www.allrecipes.com/recipe/220751/quick-chicken-piccata/",
+      "Id": 0,
+      "DateCreated": null,
+      "DateUpdated": null
+    }
+  }
+]

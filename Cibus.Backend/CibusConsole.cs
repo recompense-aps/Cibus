@@ -64,6 +64,11 @@ namespace Cibus.Backend
             }
         }
 
+		public static void Dump(string name, string contents, string fileType = "json")
+		{
+			File.WriteAllText("Out/" + name, contents);
+		}
+
 		[CibusCommand]
 		public static async Task CreateRecipe(InputProcessor processor)
 		{
@@ -101,7 +106,9 @@ namespace Cibus.Backend
 			))
 			{
 				var url = processor.Switch("u").Default("https://www.allrecipes.com/recipe/220751/quick-chicken-piccata/").String;
-				var recipe = await Parser.Factory(url).Parse();
+				var parser = Parser.Factory(url) as GenericParser;
+				var recipe = await parser.Parse();
+				Log($"Score: {parser.RecipeMatchScore}", parser.IsRecipe ? ConsoleColor.Green : ConsoleColor.Red);
 				Log(JsonConvert.SerializeObject(recipe, Formatting.Indented));
 			}
 		}
@@ -150,6 +157,80 @@ namespace Cibus.Backend
 				}
 
 				await File.WriteAllTextAsync("batch-out.json", JsonConvert.SerializeObject(recipes, Formatting.Indented));
+			}
+		}
+
+		[CibusCommand]
+		public static async Task Crawl(InputProcessor processor)
+		{
+			if (processor.Help("Generates a recipe based on the given url",
+				("u", "url to crawl", true),
+				("k", "url keywords", true),
+				("l", "limit recipes", true),
+				("o", "path to write results to", true)
+			))
+			{
+				var url = processor.Switch("u").Default("https://www.simplyrecipes.com/roasted-cabbage-steaks-with-garlic-breadcrumbs-recipe-5215499").String;
+				var keyWords = processor.Switch("k").Default("").String.Split(',');
+				var limit = processor.Switch("l").Default(50).Int;
+				var outFile = processor.Switch("o").Default("crawler-out.json").String;
+				var startXPath = processor.Switch("x").Default("//*[@id=\"card-list-1_1-0\"]").String; // specific to simplyrecipes
+				var crawler = new Crawler(url);
+
+				Log($"Initializing crawling at: {url} | ({crawler.Domain})", ConsoleColor.Green);
+
+				Profiler.Profile("crawl");
+				var urls = await crawler.CrawlUrlsMulti(limit, url, 
+					url => {
+						if (keyWords.Length == 0) return true;
+						return keyWords.Any(key => url.Contains(key));
+					}, 
+					result => {
+						Log($"[{result.allUrls?.Count()}/{limit}] Crawled: {result.url} Found: {result.newUrls?.Count()}");
+					},
+					startXPath
+				);
+				var time = Profiler.Results("crawl");
+				Log($"Finished crawling {limit} urls in {time / 1000} seconds", ConsoleColor.Green);
+				File.WriteAllText(outFile, JsonConvert.SerializeObject(urls, Formatting.Indented));
+			}
+		}
+
+		[CibusCommand]
+		public static async Task ParseRecipeCompareAlgorithms(InputProcessor processor)
+		{
+			if (processor.Help("Generates a recipe based on the given url genericly with each scoring algorithm",
+				("u", "url for the recipe", true)
+			))
+			{
+				var url = processor.Switch("u").Default("https://www.allrecipes.com/recipe/220751/quick-chicken-piccata/").String;
+				
+				var parsers = new List<GenericParser>()
+				{
+					Parser.Factory<GenericParser>(url)
+						.Use(Algorithms.ScoreLineByLine).As(RecipeParsingSection.Ingredients)
+						.Use(Algorithms.ScoreLineByLine).As(RecipeParsingSection.Directions)
+					,
+					Parser.Factory<GenericParser>(url)
+						.Use(Algorithms.ScoreByStringLength).As(RecipeParsingSection.Ingredients)
+						.Use(Algorithms.ScoreByStringLength).As(RecipeParsingSection.Directions)
+				};
+
+				Algorithms.Record();
+				var results = await Task.WhenAll(
+					parsers.Select(async x => {
+						var parsedRecipe = await x.Parse();
+						return new {
+							x.ScoringAlgorithms.Keys,
+							x.RecipeMatchScore,
+							parsedRecipe
+						};
+						
+					})
+				);
+
+				Dump(processor.CommandName, JsonConvert.SerializeObject(results, Formatting.Indented));
+				Dump(processor.CommandName + "-meta", JsonConvert.SerializeObject(Algorithms.Results(), Formatting.Indented));
 			}
 		}
 		
