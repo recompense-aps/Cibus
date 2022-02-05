@@ -34,6 +34,12 @@ The backend is currently set up as a console app. It contains all the core data 
 as well as database operations and any other core logic. The console provides a set of commands
 for interacting with the database. See the docs for how to use it.
 
+To modify the database structure:
+-	In `Cibus.Backend`:
+-	Make modifications to `Model.cs`
+-	run command `dotnet ef migrations add NameOfYourMigration`
+-	run command `dotnet ef database update`
+
 ### Frontend
 Blazor! No javascript.
 

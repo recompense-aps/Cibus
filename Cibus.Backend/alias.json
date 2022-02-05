@@ -1,0 +1,4 @@
+{
+	"crawl-simply-recipes": "Crawl -x //*[@id='card-list-1_1-0']",
+	"crawl-foodnetwork": "Crawl -k recipes/ -b ?,.amp"
+}

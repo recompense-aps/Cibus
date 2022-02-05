@@ -3,7 +3,6 @@ omnisharp.json
 .vscode
 
 #data stuff
-data/
 Out/
 
 # Build results

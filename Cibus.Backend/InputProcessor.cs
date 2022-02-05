@@ -82,13 +82,13 @@ namespace Cibus.Backend
         public bool SwitchPresent { get; private set; }
         public object? SwitchValue { get; private set; }
         public object? DefaultValue { get; private set; }
-        public object? ComputedValue => SwitchValue ?? DefaultValue ?? throw new Exception("Tried to get computed value, but only nulls found");
+        public object? ComputedValue => SwitchValue ?? DefaultValue;
         public int Int => int.Parse(ComputedValue.ToString());
         public long Long => long.Parse(ComputedValue.ToString());
         public float Float => float.Parse(ComputedValue.ToString());
         public double Double => double.Parse(ComputedValue.ToString());
         public decimal Decimal => decimal.Parse(ComputedValue.ToString());
-        public string String => ComputedValue.ToString();
+        public string String => ComputedValue?.ToString();
         public string File => ReadFile(ComputedValue.ToString());
         public bool Bool => SwitchPresent && String != "false";
         public T Get<T>() where T:class

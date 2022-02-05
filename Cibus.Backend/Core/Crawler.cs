@@ -74,20 +74,38 @@ namespace Cibus
 
 			async Task<List<string>> crawl_url(string crawlUrl)
 			{
-				var document = await web.LoadFromWebAsync(crawlUrl);
+				HtmlDocument? document = null;
+
+				try
+				{
+					document = await web.LoadFromWebAsync(crawlUrl);
+				}
+				catch(Exception e)
+				{
+					if (progressCallback != null) progressCallback(new CrawlResult()
+					{
+						url = crawlUrl,
+						exception = e
+					});
+					return new List<string>();
+				}
+				
 				var start = startXPath != null ? document.DocumentNode.SelectSingleNode(startXPath) : document.DocumentNode;
 
-				if (start == null) return new List<string>();
+				if (start == null || urls.Count > limit) return new List<string>();
 				
-				var unfilteredUrls = start.Descendants()
+				var allLinks = start.Descendants()
 					.Where(x => x.Attributes.Any(y => y.Name == "href"))
+				;
+				var unfilteredUrls = allLinks
 					.Select(x => x.Attributes.Single(a => a.Name == "href"))
-					.Where(x => GetDomain(x.Value) == Domain && !x.Value.Contains("mailto"))
 					.Select(x => x.Value)
 				;
 				var newUrls = unfilteredUrls
+					.Select(OrRelativeUrl)
+					.Where(x => GetDomain(x) == Domain && !x.Contains("mailto:") && !x.Contains("file:"))
 					.Where(filter)
-					.Where(x => !urls.Contains(x))
+					.Where(x => !urls.Contains(x) && x.Split(Domain).Length <= 2)
 					.ToList()
 				;
 
@@ -103,10 +121,12 @@ namespace Cibus
 				return newUrls;
 			}
 
-			while(urls.Count < limit)
+			while(urls.Distinct().Count() < limit)
 			{
 				var newUrlSets = await Task.WhenAll(urlsToCheck.Select(crawl_url));
 				urlsToCheck = newUrlSets.SelectMany(x => x).ToList();
+
+				if (urlsToCheck.Count == 0) break;
 			}
 
 			return urls.Take(limit).ToList();
@@ -116,6 +136,13 @@ namespace Cibus
 		{
 			return url.Replace("https://", "").Split('/')[0];
 		}
+
+		private string OrRelativeUrl(string url)
+		{
+			if (!string.IsNullOrEmpty(url) && url[0] == '/')
+				return "https://" + Domain + url;
+			return url;
+		}
 	}
 
 	public class CrawlResult
@@ -123,5 +150,6 @@ namespace Cibus
 		public string? url { get; set; }
 		public IEnumerable<string>? newUrls { get; set; }
 		public IEnumerable<string>? allUrls { get; set; }
+		public Exception? exception { get; set; }
 	}
 }

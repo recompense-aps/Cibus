@@ -14,8 +14,8 @@ namespace Cibus
 		public decimal RecipeMatchScore => matchingScores.Sum() / matchingScores.Count();
 		public Dictionary<RecipeParsingSection, Func<List<ParserToken>,decimal>> ScoringAlgorithms { get; private set; } = new Dictionary<RecipeParsingSection, Func<List<ParserToken>, decimal>>()
 		{
-			{ RecipeParsingSection.Ingredients, Algorithms.ScoreLineByLine(Keywords.IngredientKeywords) },
-			{ RecipeParsingSection.Directions, Algorithms.ScoreLineByLine(Keywords.DirectionsKeywords) }
+			{ RecipeParsingSection.Ingredients, Algorithms.ScoreByStringLength(Keywords.IngredientKeywords) },
+			{ RecipeParsingSection.Directions, Algorithms.ScoreByStringLength(Keywords.DirectionsKeywords) }
 		};
 		private List<decimal> matchingScores = new List<decimal>();
 		private object? useFor = null;
